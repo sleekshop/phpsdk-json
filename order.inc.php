@@ -123,6 +123,7 @@ public static function SetOrderDetails($session="",$args=array())
  	$result["method"]=(string)$json->method;
  	$result["status"]=(string)$json->status;
  	$result["redirect"]=html_entity_decode((string)($json->redirect));
+  $result["token"]=($json->token);
  	return($result);
  }
 

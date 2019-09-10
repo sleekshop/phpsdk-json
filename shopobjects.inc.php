@@ -125,9 +125,9 @@ public static function GetShopobjects($id_category=0,$lang=DEFAULT_LANGUAGE,$ord
   $result["keywords"]=(string)$json->category->seo->keywords;
   $attributes=array();
   foreach((array)$json->category->attributes as $attr)
-	{
-		$attributes[(string)$attr->name]=(string)$attr->value;
-	}
+  {
+  	$attributes[(string)$attr->attributes()->name]=(string)$attr;
+  }
   $result["attributes"]=$attributes;
   $result["products"]=self::get_products_from_json($json->products);
   $result["products_count"]=(int)$json->products_count;
@@ -153,9 +153,9 @@ public static function SeoGetShopobjects($permalink,$lang=DEFAULT_LANGUAGE,$orde
 	$result["description"]=(string)$json->category->seo->description;
 	$result["keywords"]=(string)$json->category->seo->keywords;
 	$attributes=array();
-  foreach((array)$json->category->attributes as $attr)
+	foreach((array)$json->category->attributes as $attr)
 	{
-		$attributes[(string)$attr->name]=(string)$attr->value;
+		$attributes[(string)$attr->attributes()->name]=(string)$attr;
 	}
 	$result["attributes"]=$attributes;
 	$result["products"]=self::get_products_from_json($json->products);
