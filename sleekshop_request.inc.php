@@ -4,7 +4,6 @@
 * version: 1.3.0.0
 * (c) VitaBytes 2011 - Kaveh Raji
 */
-//die("Wir updaten unsere Seite bitte haben Sie etwas Geduld.");
 define("LICENCE_USERNAME","demo_NBSqhrcrhMci15Ir9UWI");
 define("SERVER","http://demo.sleekshop.net/srv/service/");
 define("LICENCE_PASSWORD","s9vmrbwT23B7bmjR4Vmz");
@@ -482,6 +481,17 @@ private $post_data=array();
      $post_data=$this->post_data;
      $post_data["request"]="aggregate";
      $post_data["pipe"]=json_encode($pipe);
+     return $this->snd_request($this->server,$post_data);
+   }
+
+  /*
+  * This function is for getting the invoice of an order
+  */
+  public function get_invoice($id_order=0)
+   {
+     $post_data=$this->post_data;
+     $post_data["request"]="get_invoice";
+     $post_data["id_order"]=$id_order;
      return $this->snd_request($this->server,$post_data);
    }
 
