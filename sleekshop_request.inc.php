@@ -495,6 +495,17 @@ private $post_data=array();
      return $this->snd_request($this->server,$post_data);
    }
 
+   /*
+    * This function is for getting the order_confirmation of an order
+    */
+    public function get_order_confirmation($id_order=0,$args=array())
+      {
+        $post_data=$this->post_data;
+        $post_data["request"]="get_order_confirmation";
+        $post_data["id_order"]=$id_order;
+        $post_data["args"]=json_encode($args);
+        return $this->snd_request($this->server,$post_data);
+      }
 
 
  /*
