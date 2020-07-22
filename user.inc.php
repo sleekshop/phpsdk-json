@@ -28,17 +28,17 @@ class UserCtl
  }
 
 
-/*
- * Logs out the user
- */
- public static function LogOut($session="")
- {
- 	$sr=new SleekShopRequest();
- 	$json=$sr->logout_user($session,$username,$password);
- 	$json=json_decode($json);
- 	$result["status"]=(string)$json->status;
- 	return($result);
- }
+ /*
+  * Logs out the user
+  */
+  public static function LogOut($session="")
+  {
+  	$sr=new SleekShopRequest();
+  	$json=$sr->logout_user($session);
+  	$json=json_decode($json);
+  	$result["status"]=(string)$json->status;
+  	return($result);
+  }
 
 
  /*
