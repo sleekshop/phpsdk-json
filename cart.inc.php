@@ -36,6 +36,20 @@ class CartCtl
  		$piece["attributes"]=$attributes;
  		$contents[]=$piece;
  	}
+  $coupons=array();
+  $coupons["sum"]=(float)$json->coupons->sum;
+  foreach((array)$json->coupons->positions as $pos)
+   {
+    $piece=array();
+    $piece["id"]=0;
+    $piece["id_product"]=0;
+    $piece["quantity"]=1;
+    $piece["price"]=(float)$pos->used_amount*-1;
+    $piece["sum_price"]=(float)$pos->used_amount*-1;
+    $piece["name"]=(string)$pos->name;
+    $piece["description"]=" ";
+    $contents[]=$piece;
+   }
  	$delivery_costs=array();
  	$delivery_costs["sum"]=(float)$json->delivery_costs->sum;
  	foreach((array)$json->delivery_costs->positions as $pos)
@@ -48,6 +62,7 @@ class CartCtl
  	 }
  	$result["contents"]=$contents;
  	$result["delivery_costs"]=$delivery_costs;
+  $result["sum"]=$result["sum"]-$coupons["sum"];
  	return($result);
  }
 

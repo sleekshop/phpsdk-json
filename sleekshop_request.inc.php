@@ -574,6 +574,18 @@ private $post_data=array();
    return $this->snd_request($this->server,$post_data);
   }
 
+  /*
+   * This function adds coupons rows to the cart
+   */
+  public function add_coupons($session="",$coupons=array())
+  {
+   $post_data=$this->post_data;
+   $post_data["request"]="add_coupons";
+   $post_data["session"]=$session;
+   $post_data["coupons"]=json_encode($coupons);
+   return $this->snd_request($this->server,$post_data);
+  }
+
 
   /*
    * This function adds deliverycosts rows to the cart permanently
