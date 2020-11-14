@@ -52,7 +52,7 @@ private static function get_shopobject_from_json($so="")
      {
       $attr["value"]=(string)$attribute->value;
       $attr["value"]=htmlspecialchars_decode($attr["value"]);
-      if($attr["type"]=="TXT") $attr["value"]=str_replace("\n","<br>",$attr["value"]);  
+      if($attr["type"]=="TXT") $attr["value"]=str_replace("\n","<br>",$attr["value"]);
      }
 
     //$attr["value"]=html_entity_decode($attr["value"]);
@@ -162,7 +162,7 @@ public static function SeoGetShopobjects($permalink,$lang=DEFAULT_LANGUAGE,$orde
 	$attributes=array();
 	foreach((array)$json->category->attributes as $attr)
 	{
-		$attributes[(string)$attr->attributes()->name]=(string)$attr;
+		$attributes[(string)$attr->name]=(string)$attr->value;
 	}
 	$result["attributes"]=$attributes;
 	$result["products"]=self::get_products_from_json($json->products);
