@@ -2,7 +2,7 @@
 /*
 * This file contains functions for communicating with the sleekshop - server
 * version: 1.3.0.0
-* (c) VitaBytes 2011 - Kaveh Raji
+* (c) sleekcommerce - Kaveh Raji
 */
 define("LICENCE_USERNAME","");
 define("SERVER","");
