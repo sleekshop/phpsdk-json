@@ -4,7 +4,7 @@
 * version: 1.3.0.0
 * (c) sleekcommerce - Kaveh Raji
 */
-define("SERVER","https://YOUR-SERVER.sleekshop.net/srv/service/");
+define("SERVER","https://YOUR-SHOP.sleekshop.net/srv/service/");
 define("LICENCE_USERNAME","");
 define("LICENCE_PASSWORD","");
 
@@ -238,6 +238,16 @@ private $post_data=array();
     if($key=="attributes") $value=json_encode($value);
     $post_data[$key]=$value;
    }
+   return $this->snd_request($this->server,$post_data);
+  }
+
+ /*
+  * This function gets all delivery countries activated in the backend
+  */
+  public function get_delivery_countries()
+  {
+   $post_data=$this->post_data;
+   $post_data["request"]="get_delivery_countries";
    return $this->snd_request($this->server,$post_data);
   }
 
