@@ -24,6 +24,17 @@ private $post_data=array();
  }
 
 
+/*
+   * This function is for instant_login
+   */
+  public function instant_login($token="")
+  {
+   $post_data=$this->post_data;
+   $post_data["request"]="instant_login";
+   $post_data["token"]=$token;
+   return $this->snd_request($this->server,$post_data);
+  }
+
 
   /*
    * This function is for requesting the category names and labels with the parent determined by id_parent
