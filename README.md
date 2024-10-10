@@ -1,8 +1,37 @@
-# phpsdk-json
-PHP SDK for handling json results
+# Sleekshop phpsdk-json 2.0
 
-Simple usage: 
-1. composer require sleekcommerce/sleekshop-phpsdk-json:v1.0.0
-2. replace your credentals in the vendor/sleekcommerce/sleekshop-phpsdk-json/sleekshop_request.inc.php file
-3. include the vendor/sleekcommerce/sleekshop-phpsdk-json/init.inc.php
-4. Use the corresponding controllers to make requests.
+This is the official Sleekshop PHP SDK for the Sleekshop API. It is a wrapper around the Sleekshop API, which provides a simple way to interact with the API.
+
+> Sleekshop is a cloudbased e-commerce platform which allows you to deploy e-commerce functionality via API into your projects no matter what kind of programming - language you want to use, or which devices you want to address.
+
+More about Sleekshop can be found at https://www.sleekshop.io
+
+## Documentation
+
+For more information about the Sleekshop API, please refer to the [official documentation](https://docs.sleekshop.io/).
+
+## Installation
+
+### Using composer
+
+```
+composer require sleekcommerce/sleekshop-phpsdk-json:v2.0.0
+```
+
+## Usage
+
+### 1. Setup SDK
+
+```php
+
+```
+
+### 2. Interact with the API
+
+```php
+
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
