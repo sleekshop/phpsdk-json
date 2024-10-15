@@ -6,20 +6,22 @@ use Sleekshop\SleekShopRequest;
 
 class SessionCtl
 {
+    private SleekShopRequest $request;
 
-    function __construct()
+    public function __construct(SleekShopRequest $request)
     {
-
+        $this->request = $request;
     }
 
-    /*
+    /**
      * Delivers a valid session and returns it
+     *
+     * @return string
      */
-    public static function GetSession()
+    public function GetSession(): string
     {
-        if (!isset($_COOKIE[TOKEN . '_session']) || $_COOKIE[TOKEN . '_session'] == '') {
-            $sr = new SleekShopRequest();
-            $json = $sr->get_new_session();
+        if (!isset($_COOKIE[$this->request->token . '_session']) || $_COOKIE[$this->request->token . '_session'] == '') {
+            $json = $this->request->get_new_session();
             $json = json_decode($json);
             if (isset($json->code)) {
                 $code = (string)$json->code;
@@ -28,18 +30,20 @@ class SessionCtl
                 throw new Exception('API ERROR // Error getting session');
             }
         } else {
-            $code = $_COOKIE[TOKEN . '_session'];
+            $code = $_COOKIE[$this->request->token . '_session'];
         }
         return ($code);
     }
 
-
-    /*
+    /**
      * Sets the session into the cookie
+     *
+     * @param string $session
+     * @return void
      */
-    public static function SetSession($session = '')
+    public function SetSession(string $session = ''): void
     {
-        setcookie(TOKEN . '_session', $session);
+        setcookie($this->request->token . '_session', $session);
     }
 
 

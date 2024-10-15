@@ -68,7 +68,7 @@ class CartCtl
     /*
      * Adds an element to the cart
      */
-    public function Add ($session = "", $id_product = 0, $quantity = 0, $price_field = "", $name_field = "", $description_field = "", $language = DEFAULT_LANGUAGE, $element_type = "PRODUCT_GR", $id_parent_element = 0, $attributes = array()): array
+    public function Add($session = "", $id_product = 0, $quantity = 0, $price_field = "", $name_field = "", $description_field = "", $language = null, $element_type = "PRODUCT_GR", $id_parent_element = 0, $attributes = array()): array
     {
         $json = $this->request->add_to_cart($session, $id_product, $quantity, $price_field, $name_field, $description_field, $language, $element_type, $id_parent_element, $attributes);
         $json = json_decode($json);

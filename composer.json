@@ -1,24 +1,34 @@
 {
-    "name": "sleekcommerce/sleekshop-phpsdk-json",
-    "type": "library",
-    "description": "Sleekshop PHP SDK for the Sleekshop API",
-    "keywords": ["sleekshop","sdk"],
-    "homepage": "https://www.sleekshop.io",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Kaveh Raji",
-            "email": "info@sleekshop.io",
-            "homepage": "https://www.sleekshop.io",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": ">=8.0"
+  "name": "sleekcommerce/sleekshop-phpsdk-json",
+  "type": "library",
+  "description": "Sleekshop PHP SDK for the Sleekshop API",
+  "keywords": [
+    "sleekshop",
+    "sdk"
+  ],
+  "homepage": "https://www.sleekshop.io",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kaveh Raji",
+      "email": "info@sleekshop.io",
+      "homepage": "https://www.sleekshop.io",
+      "role": "Developer"
     },
-    "autoload": {
-        "psr-4" : {
-            "Sleekshop\\" : "src/"
-        }
+    {
+      "name": "Torsten Högel",
+      "email": "th@sleekshop.io",
+      "homepage": "https://www.sleekshop.io",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "php": ">=8.0",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sleekshop\\": "src/"
+    }
+  }
 }
