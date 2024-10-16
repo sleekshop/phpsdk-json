@@ -8,17 +8,21 @@ error_reporting(E_ERROR);
 include 'vendor/autoload.php';
 
 use Sleekshop\sleekSDK;
+use Sleekshop\Options\DefaultOptions;
+use Sleekshop\Options\SessionOptions;
+
+$options = new DefaultOptions('de_DE', 'sleekshop', 100);
 
 $sleekshop = new sleekSDK(
-    'https://orrpdemo.sleekshop.net/srv/service/',
-    'orrpdemo_CoRN8hJmekl4eG8pMU9R',
-    'ijvOPDoStEQBIJiN3nY4',
-    'QlEXRxkUOTEV5e2xE0zx',
-    [
-        'token' => 'DEMO',
-        'default_language' => 'de_DE',
-    ]
+    $options
 );
 
-$session = $sleekshop->SessionCtl()->GetSession();
-echo $session;
+$sessionOptions = new SessionOptions('none');
+
+try {
+    $session = $sleekshop->CategoriesCtl()->GetContentsInCategory(1);
+} catch (Exception $e) {
+    echo $e->getMessage();
+    die();
+}
+print_r($session);

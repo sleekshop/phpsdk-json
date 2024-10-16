@@ -13,6 +13,7 @@ use Sleekshop\Controller\PaymentCtl;
 use Sleekshop\Controller\ShopobjectsCtl;
 use Sleekshop\Controller\SessionCtl;
 use Sleekshop\Controller\UserCtl;
+use Sleekshop\Options\DefaultOptions;
 
 class sleekSDK {
 
@@ -20,7 +21,7 @@ class sleekSDK {
     private string $licence_username;
     private string $licence_password;
     private string $licence_secret_key;
-    private array $options;
+    private DefaultOptions $options;
 
     private SleekShopRequest $request;
 
@@ -29,7 +30,7 @@ class sleekSDK {
      * @param string $licence_username   Sleekshop API Licence Username
      * @param string $licence_password   Sleekshop API Licence Password
      */
-    public function __construct(string $server, string $licence_username, string $licence_password, string $licence_secret_key = '', array $options = [])
+    public function __construct(string $server, string $licence_username, string $licence_password, string $licence_secret_key = '', DefaultOptions $options = null)
     {
         $this->server = $server;
         $this->licence_username = $licence_username;
@@ -65,7 +66,7 @@ class sleekSDK {
      */
     public function CategoriesCtl(): CategoriesCtl
     {
-        return new CategoriesCtl(self::$request);
+        return new CategoriesCtl($this->request);
     }
 
     /**
@@ -85,7 +86,7 @@ class sleekSDK {
      */
     public function ShopobjectsCtl(): ShopobjectsCtl
     {
-        return new ShopobjectsCtl(self::$request);
+        return new ShopobjectsCtl($this->request);
     }
 
     /**
@@ -93,7 +94,7 @@ class sleekSDK {
      *
      * @return SessionCtl
      */
-    #[NoReturn] public function SessionCtl(): SessionCtl
+    public function SessionCtl(): SessionCtl
     {
         return new SessionCtl($this->request);
     }

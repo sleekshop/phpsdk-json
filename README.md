@@ -23,13 +23,26 @@ composer require sleekcommerce/sleekshop-phpsdk-json:v2.0.0
 ### 1. Setup SDK
 
 ```php
+include 'vendor/autoload.php';
 
+use Sleekshop\sleekSDK;
+use Sleekshop\Options\DefaultOptions; // optional
+
+$defaultOptions = new DefaultOptions('en_EN', 'sleekshop', 100); // optional
+
+$sleekshop = new sleekSDK(
+    'https://<yourInstance>.sleekshop.net/srv/service/',
+    '<licence_username>',
+    '<licence_password>',
+    '<licence_secret_key>', // optional but required for some operations
+    $defaultOptions // optional
+);
 ```
 
 ### 2. Interact with the API
 
 ```php
-
+$session = $sleekshop->SessionCtl()->GetSession();
 ```
 
 ## License

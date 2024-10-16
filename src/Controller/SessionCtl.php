@@ -3,6 +3,7 @@
 namespace Sleekshop\Controller;
 
 use Sleekshop\SleekShopRequest;
+use Sleekshop\Options\SessionOptions;
 
 class SessionCtl
 {
@@ -14,37 +15,76 @@ class SessionCtl
     }
 
     /**
-     * Delivers a valid session and returns it
+     * Returns a valid session code
      *
+     * @param SessionOptions|null $options Options for session retrieval and storage
      * @return string
+     * @throws \Exception
      */
-    public function GetSession(): string
+    public function GetSession(SessionOptions $options = null): string
     {
-        if (!isset($_COOKIE[$this->request->token . '_session']) || $_COOKIE[$this->request->token . '_session'] == '') {
-            $json = $this->request->get_new_session();
-            $json = json_decode($json);
-            if (isset($json->code)) {
-                $code = (string)$json->code;
-                self::SetSession($code);
-            } else {
-                throw new Exception('API ERROR // Error getting session');
-            }
-        } else {
-            $code = $_COOKIE[$this->request->token . '_session'];
+        $options = $options ?? new SessionOptions();
+
+        $sessionCode = $this->retrieveSession($options->storageMethod);
+        if ($sessionCode === null) {
+            $sessionCode = $this->fetchSession();
+            $this->storeSession($sessionCode, $options->storageMethod, $options->cookiePath);
         }
-        return ($code);
+        return $sessionCode;
     }
 
     /**
-     * Sets the session into the cookie
+     * Retrieves the session based on the storage method
      *
-     * @param string $session
-     * @return void
+     * @param string $storageMethod
+     * @return string|null
      */
-    public function SetSession(string $session = ''): void
+    private function retrieveSession(string $storageMethod): ?string
     {
-        setcookie($this->request->token . '_session', $session);
+        return match ($storageMethod) {
+            'cookie' => $_COOKIE[$this->request->token . '_session'] ?? null,
+            'none' => null,
+            default => throw new \InvalidArgumentException('Unsupported storage method'),
+        };
     }
 
+    /**
+     * Fetches a new session from the API
+     *
+     * @return string
+     * @throws \Exception
+     */
+    private function fetchSession(): string
+    {
+        $json = $this->request->get_new_session();
+        if ($json['status'] == 'error') {
+            throw new \Exception('API ERROR // Error getting session');
+        }
 
+        return (string)$json['response']['code'];
+    }
+
+    /**
+     * Stores the session based on the storage method
+     *
+     * @param string $sessionCode
+     * @param string $storageMethod
+     * @param string $cookiePath
+     * @return void
+     */
+    private function storeSession(string $sessionCode, string $storageMethod, string $cookiePath): void
+    {
+        switch ($storageMethod) {
+            case 'cookie':
+                setcookie($this->request->token . '_session', $sessionCode, [
+                    'path' => $cookiePath
+                ]);
+                break;
+            case 'none':
+                // Do nothing, user handles storage themselves
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported storage method');
+        }
+    }
 }

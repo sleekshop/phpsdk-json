@@ -2,57 +2,63 @@
 
 namespace Sleekshop\Controller;
 
+use Sleekshop\Helper\CategoriesHelper;
 use Sleekshop\SleekShopRequest;
 
 class CategoriesCtl
 {
+    private SleekShopRequest $request;
 
-    function __construct() {}
-
-    /*
-     * Delivers an array containing all categories with the parent defined by $id_parent
-     */
-    public static function GetCategories($id_parent = 0, $lang = DEFAULT_LANGUAGE)
-    {
-        $sr = new SleekShopRequest();
-        $json = $sr->get_categories($id_parent, $lang);
-        $json = json_decode($json);
-        $result = array();
-        foreach ($json->categories as $shopcategory) {
-            $piecearray = array();
-            $piecearray['id'] = (int)$shopcategory->id;
-            $piecearray['label'] = (string)$shopcategory->label;
-            $piecearray['name'] = (string)$shopcategory->name;
-            $piecearray['permalink'] = (string)$shopcategory->seo->permalink;
-            $piecearray['title'] = (string)$shopcategory->seo->title;
-            $piecearray['description'] = (string)$shopcategory->seo->description;
-            $piecearray['keywords'] = (string)$shopcategory->seo->keywords;
-            $attributes = array();
-            foreach ($shopcategory->attributes as $attr) {
-                $attributes[$attr->name] = $attr->value;
-            }
-            $piecearray['attributes'] = $attributes;
-            isset($shopcategory->attributes->link->value) ? $piecearray['link'] = (string)$shopcategory->attributes->link->value : $piecearray['link'] = '';
-            isset($shopcategory->attributes->position->value) ? $piecearray['position'] = (string)$shopcategory->attributes->position->value : $piecearray['position'] = '';
-            $piecearray['children'] = self::GetCategories($piecearray['id'], $lang);
-            $result[] = $piecearray;
-
-        }
-        return ($result);
+    public function __construct(SleekShopRequest $request) {
+        $this->request = $request;
     }
 
-
-    /*
-    * Get Menu
-    */
-    public static function GetMenu($language = DEFAULT_LANGUAGE)
+    /**
+     * This function returns an array containing all categories with the parent defined by $id_parent
+     *
+     * @param int $id_parent
+     * @param string|null $lang
+     * @return array
+     */
+    public function GetCategories(int $id_parent = 0, string $lang = null): array
     {
-        if (!file_exists(TEMPLATE_PATH . '/cache/' . $language . '-menu.tmp')) {
-            $res = CategoriesCtl::GetCategories(CATEGORIES_ID, $language);
-            $res = serialize($res);
-            file_put_contents(TEMPLATE_PATH . '/cache/' . $language . '-menu.tmp', $res);
+        $lang = $lang ?? $this->request->default_language;
+        $json = $this->request->get_categories($id_parent, $lang);
+        if ($json['status'] == 'error') {
+            return $json;
+        }
+        return CategoriesHelper::process_categories_response($json['response'], $this->request);
+    }
+
+    public function GetProductsInCategory(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
+    {
+        $lang = $lang ?? $this->request->default_language;
+        $json = $this->request->get_products_in_category($id_category, $lang, $order_columns, $order, $left_limit, $right_limit, $needed_attributes);
+        if ($json['status'] == 'error') {
+            return $json;
+        }
+        return CategoriesHelper::process_products_response($json, $this->request);
+    }
+
+    public function GetContentsInCategory(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
+    {
+        $lang = $lang ?? $this->request->default_language;
+        $json = $this->request->get_contents_in_category($id_category, $lang, $order_columns, $order, $left_limit, $right_limit, $needed_attributes);
+        if ($json['status'] == 'error') {
+            return $json;
+        }
+        return CategoriesHelper::process_contents_response($json, $this->request);
+    }
+
+    public function GetMenu($language = null)
+    {
+        $language = $language ?? $this->request->default_language;
+        if (!file_exists($this->request->template_path . '/cache/' . $language . '-menu.tmp')) {
+            $res = CategoriesCtl::GetCategories($this->request->categories_id, $language);
+            $res = serialize($res['response']);
+            file_put_contents($this->request->template_path . '/cache/' . $language . '-menu.tmp', $res);
         } else {
-            $res = file_get_contents(TEMPLATE_PATH . '/cache/' . $language . '-menu.tmp');
+            $res = file_get_contents($this->request->template_path . '/cache/' . $language . '-menu.tmp');
         }
         return (unserialize($res));
     }
