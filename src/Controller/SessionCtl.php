@@ -34,6 +34,32 @@ class SessionCtl
     }
 
     /**
+     * Invalidates the current session locally
+     *
+     * @param SessionOptions|null $options
+     * @return void
+     */
+    public function InvalidateSession(SessionOptions $options = null): void
+    {
+        $options = $options ?? new SessionOptions();
+        switch ($options->storageMethod) {
+            case 'cookie':
+                setcookie($this->request->token . '_session', '', [
+                    'path' => $options->cookiePath
+                ]);
+                break;
+            case 'session':
+                unset($_SESSION[$this->request->token . '_session']);
+                break;
+            case 'none':
+                // Do nothing, user handles storage themselves
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported storage method');
+        }
+    }
+
+    /**
      * Retrieves the session based on the storage method
      *
      * @param string $storageMethod
@@ -43,6 +69,7 @@ class SessionCtl
     {
         return match ($storageMethod) {
             'cookie' => $_COOKIE[$this->request->token . '_session'] ?? null,
+            'session' => $_SESSION[$this->request->token . '_session'] ?? null,
             'none' => null,
             default => throw new \InvalidArgumentException('Unsupported storage method'),
         };
@@ -79,6 +106,9 @@ class SessionCtl
                 setcookie($this->request->token . '_session', $sessionCode, [
                     'path' => $cookiePath
                 ]);
+                break;
+            case 'session':
+                $_SESSION[$this->request->token . '_session'] = $sessionCode;
                 break;
             case 'none':
                 // Do nothing, user handles storage themselves

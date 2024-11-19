@@ -2,6 +2,7 @@
 
 namespace Sleekshop\Controller;
 
+use Sleekshop\Helper\CartHelper;
 use Sleekshop\SleekShopRequest;
 
 class CartCtl
@@ -9,110 +10,104 @@ class CartCtl
 
     private SleekShopRequest $request;
 
-    public function __construct(SleekShopRequest $request) {
+    public function __construct(SleekShopRequest $request)
+    {
         $this->request = $request;
     }
 
-    private static function get_cart_array($json = ""): array
-    {
-        $result = array();
-        $result["sum"] = (float)$json->sum;
-        isset($json->last_inserted_element_id) ? $result["last_inserted_id"] = (int)$json->last_inserted_element_id : $result["last_inserted_id"] = 0;
-        $contents = array();
-        foreach ((array)$json->contents as $element) {
-            $piece = array();
-            $piece["type"] = (string)$element->type;
-            $piece["id"] = (int)$element->id;
-            $piece["id_product"] = (int)$element->id_product;
-            $piece["quantity"] = (float)$element->quantity;
-            $piece["price"] = (float)$element->price;
-            $piece["sum_price"] = (float)$element->sum_price;
-            $piece["name"] = (string)$element->name;
-            $piece["description"] = (string)$element->description;
-            $attributes = array();
-            foreach ($element->attributes as $attr) {
-                $attributes[(string)$attr->name] = (string)$attr->value;
-            }
-            $piece["attributes"] = $attributes;
-            $contents[] = $piece;
-        }
-        $coupons = array();
-        $coupons["sum"] = (float)$json->coupons->sum;
-        foreach ((array)$json->coupons->positions as $pos) {
-            $piece = array();
-            $piece["id"] = 0;
-            $piece["id_product"] = 0;
-            $piece["quantity"] = 1;
-            $piece["price"] = (float)$pos->used_amount * -1;
-            $piece["sum_price"] = (float)$pos->used_amount * -1;
-            $piece["name"] = (string)$pos->name;
-            $piece["description"] = " ";
-            $contents[] = $piece;
-        }
-        $delivery_costs = array();
-        $delivery_costs["sum"] = (float)$json->delivery_costs->sum;
-        foreach ((array)$json->delivery_costs->positions as $pos) {
-            $piece = array();
-            $piece["name"] = (string)$pos->name;
-            $piece["price"] = (float)$pos->price;
-            $piece["tax"] = (float)$pos->tax;
-            $delivery_costs[(string)$pos->name] = $piece;
-        }
-        $result["contents"] = $contents;
-        $result["delivery_costs"] = $delivery_costs;
-        $result["sum"] = $result["sum"] - $coupons["sum"];
-        return ($result);
-    }
-
-
-    /*
+    /**
      * Adds an element to the cart
+     *
+     * @param string $session
+     * @param int $id_product
+     * @param int $quantity
+     * @param string $price_field
+     * @param string $name_field
+     * @param string $description_field
+     * @param string|null $language
+     * @param string $element_type
+     * @param int $id_parent_element
+     * @param array<object> $attributes
+     * @return array
      */
-    public function Add($session = "", $id_product = 0, $quantity = 0, $price_field = "", $name_field = "", $description_field = "", $language = null, $element_type = "PRODUCT_GR", $id_parent_element = 0, $attributes = array()): array
+    public function Add(string $session = "", int $id_product = 0, int $quantity = 0, string $price_field = "", string $name_field = "", string $description_field = "", string $language = null, string $element_type = "PRODUCT_GR", int $id_parent_element = 0, array $attributes = []): array
     {
         $json = $this->request->add_to_cart($session, $id_product, $quantity, $price_field, $name_field, $description_field, $language, $element_type, $id_parent_element, $attributes);
-        $json = json_decode($json);
-        $cart = self::get_cart_array($json);
-        return ($cart);
+        if ($json['status'] !== "success") {
+            return $json;
+        }
+        $json['response'] = CartHelper::get_cart_array($json['response']);
+        return $json;
     }
 
-
-    /*
+    /**
      * Deletes an element from the cart
+     *
+     * @param string $session
+     * @param int $id_element
+     * @return array
      */
-    public function Del ($session = "", $id_element = 0)
+    public function Del(string $session = "", int $id_element = 0): array
+    {
+        $json = $this->request->del_from_cart($session, $id_element);
+        if ($json['status'] !== 'success') {
+            return $json;
+        }
+        $json['response'] = CartHelper::get_cart_array($json['response']);
+        return $json;
+    }
+
+    /**
+     * Subtracts an element from the cart
+     *
+     * @param string $session
+     * @param int $id_element
+     * @return array
+     */
+    public function Sub(string $session = "", int $id_element = 0): array
     {
         $json = $this->request->sub_from_cart($session, $id_element);
-        $json = json_decode($json);
-        $cart = self::get_cart_array($json);
-        return ($cart);
-    }
-
-
-    /*
-     * Returns the current cart
-     */
-    public function Get ($session = "")
-    {
-        $json = $this->request->get_cart($session);
-        $json = json_decode($json);
-        if ($json->object == "error") {
-            SessionCtl::SetSession("");
-            return (array());
+        if ($json['status'] !== "success") {
+            return $json;
         }
-        $cart = self::get_cart_array($json);
-        return ($cart);
+        $json['response'] = CartHelper::get_cart_array($json['response']);
+        return $json;
     }
 
-    /*
-     * Gets a new cart from the server
+    /**
+     * Returns the cart of the session
+     *
+     * @param string $session
+     * @return array
      */
-    public function Refresh ($session = "")
+    public function Get(string $session = ""): array
     {
         $json = $this->request->get_cart($session);
-        $json = json_decode($json);
-        $cart = self::get_cart_array($json);
-        return ($cart);
+
+        if ($json['status'] !== "success") {
+            (new SessionCtl($this->request))->InvalidateSession();
+            return [];
+        }
+
+        $json['response'] = CartHelper::get_cart_array($json['response']);
+        return $json;
+    }
+
+    /**
+     * Clears the cart of the session
+     *
+     * @param string $session
+     * @return array
+     */
+    public function Clear(string $session = ""): array
+    {
+        $json = $this->request->clear_cart($session);
+        if ($json['status'] !== "success") {
+            return $json;
+        }
+
+        $json['response'] = CartHelper::get_cart_array($json['response']);
+        return $json;
     }
 
 }

@@ -6,7 +6,6 @@
 
 namespace Sleekshop;
 
-use JetBrains\PhpStorm\NoReturn;
 use Sleekshop\Controller\CartCtl;
 use Sleekshop\Controller\CategoriesCtl;
 use Sleekshop\Controller\PaymentCtl;

@@ -50,7 +50,7 @@ class ShopobjectsCtl
      * @param $lang
      * @return array
      */
-    public function GetProductDetails($id_product = 0, $lang = null)
+    public function GetProductDetails($id_product = 0, $lang = null): array
     {
         $json = $this->request->get_product_details($id_product, $lang);
         return ShopobjectHelper::get_shopobject_from_json($this->request, $json);

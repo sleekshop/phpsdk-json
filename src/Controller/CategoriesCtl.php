@@ -27,7 +27,8 @@ class CategoriesCtl
         if ($json['status'] == 'error') {
             return $json;
         }
-        return CategoriesHelper::process_categories_response($json['response'], $this->request);
+        $json['response'] = CategoriesHelper::process_categories_response($json['response'], $this->request);
+        return $json;
     }
 
     public function GetProductsInCategory(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
@@ -37,7 +38,8 @@ class CategoriesCtl
         if ($json['status'] == 'error') {
             return $json;
         }
-        return CategoriesHelper::process_products_response($json, $this->request);
+        $json['response'] = CategoriesHelper::process_products_response($json, $this->request);
+        return $json;
     }
 
     public function GetContentsInCategory(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
@@ -62,6 +64,5 @@ class CategoriesCtl
         }
         return (unserialize($res));
     }
-
 
 }
