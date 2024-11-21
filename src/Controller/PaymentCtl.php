@@ -7,36 +7,72 @@ use Sleekshop\SleekShopRequest;
 class PaymentCtl
 {
 
-    function __construct()
-    {
+    private SleekShopRequest $request;
 
+    public function __construct(SleekShopRequest $request)
+    {
+        $this->request = $request;
     }
 
-
-    public static function GetPaymentMethods(): array
+    /**
+     * This function returns an array containing all payment methods configured in the sleekshop backend
+     *
+     * @return array
+     */
+    public function GetPaymentMethods(): array
     {
-        $sr = new SleekShopRequest();
-        $json = $sr->get_payment_methods();
-        $json = json_decode($json);
-        $result = array();
-        foreach ($json as $method) {
+        $json = $this->request->get_payment_methods();
+        if ($json['status'] == 'error') {
+            return $json;
+        }
+        $result = [];
+        foreach ($json['response'] as $method) {
             if ($method != 'payment_methods') {
                 $piecearray = array();
-                $piecearray['id'] = (int)$method->id;
-                $piecearray['name'] = (string)$method->name;
-                foreach ((array)$method->attributes as $key => $attr) {
+                $piecearray['id'] = (int)$method['id'];
+                $piecearray['name'] = (string)$method['name'];
+                foreach ((array)$method['attributes'] as $key => $attr) {
                     $piecearray['attributes'][$key] = (string)$attr;
                 }
-                $result[(string)$method->name] = $piecearray;
+                $result[(string)$method['name']] = $piecearray;
             }
         }
         return ($result);
     }
 
-
-    public static function DoPayment($id_order = 0, $args = array())
+    /**
+     * This function initializes the payment for the payment provider via sleekshop
+     *
+     * @param int $id_order
+     * @param array $args
+     * @return array|string[]
+     */
+    public function DoPayment(int $id_order = 0, array $args = [])
     {
+        $json = $this->request->do_payment($id_order, $args);
+        if ($json['status'] == 'error') {
+            return $json;
+        }
+        $result = [];
+        $result["method"] = (string)$json['method'];
+        $result["status"] = (string)$json['status'];
+        $result["redirect"] = html_entity_decode((string)($json['redirect']));
+        $result["token"] = $json['token'];
 
+        $json['response'] = $result;
+        return $json;
+    }
+
+    /**
+     * This function adds the delivery costs to the order
+     *
+     * @param string $session
+     * @param array $delivery_costs
+     * @return array|string[]
+     */
+    public function AddDeliveryCosts(string $session = "", array $delivery_costs = [])
+    {
+        return $this->request->add_delivery_costs($session, $delivery_costs);
     }
 
 

@@ -22,7 +22,6 @@ class SleekShopRequest
     public string $token = 'sleekshop';
     public string $default_language;
     public int $product_image_thumb_height = 100;
-    public string $template_path = __DIR__ . '/templates';
     public int $categories_id = 2;
 
     /**
@@ -196,18 +195,20 @@ class SleekShopRequest
      * @param array $needed_attributes The attributes that should be included in the result
      * @return array The result of the request in JSON format
      */
-    public function dump_category(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
+    public function dump_category(int $id_category = 0, string $lang = null, $country = '', array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = [], int $depth = 0): array
     {
         $lang = $lang ?? $this->default_language;
         $post_data = $this->post_data;
         $post_data['request'] = 'dump_category';
         $post_data['id_category'] = $id_category;
         $post_data['language'] = $lang;
+        $post_data['country'] = $country;
         $post_data['order_columns'] = json_encode($order_columns);
         $post_data['order'] = $order;
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+        $post_data['depth'] = $depth;
 
         return $this->snd_request($this->server, $post_data);
     }
@@ -215,6 +216,7 @@ class SleekShopRequest
     /**
      * Retrieves all products in a given category determined by its permalink
      * @param string $permalink The permalink of the category
+     * @param string|null $country
      * @param array $order_columns The columns to order by
      * @param string $order The order (ASC|DESC)
      * @param int $left_limit The left limit of the products to retrieve
@@ -222,11 +224,12 @@ class SleekShopRequest
      * @param array $needed_attributes The attributes that should be included in the result
      * @return array The result of the request in JSON format
      */
-    public function seo_get_products_in_category(string $permalink = '', array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
+    public function seo_get_products_in_category(string $permalink = '', string $country = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
     {
         $post_data = $this->post_data;
         $post_data['request'] = 'seo_get_products_in_category';
         $post_data['permalink'] = $permalink;
+        $post_data['country'] = $country;
         $post_data['order_columns'] = json_encode($order_columns);
         $post_data['order'] = $order;
         $post_data['left_limit'] = $left_limit;
@@ -301,7 +304,7 @@ class SleekShopRequest
      * @param array $seo The seo informations for the category
      * @return array The result of the request
      */
-    public function create_category($id_parent, $name, $labels, $attributes, $seo): array
+    public function create_category(int $id_parent = 0, string $name = '', array $labels = [], array $attributes = [], array $seo = []): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
@@ -324,7 +327,7 @@ class SleekShopRequest
      * @param array $seo The seo informations for the category
      * @return array The result of the request
      */
-    public function update_category(int $id_category, string $name, array $labels, array $attributes, array $seo): array
+    public function update_category(int $id_category = 0, string $name = '', array $labels = [], array $attributes = [], array $seo = []): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
@@ -491,13 +494,14 @@ class SleekShopRequest
      * @param array $availability The availability informations for the product
      * @return array The result of the request
      */
-    public function create_product(string $class, string $name, array $attributes, array $metadata, array $seo, array $availability): array
+    public function create_product(string $class, string $name, int $shop_active, array $attributes, array $metadata, array $seo, array $availability): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'create_product';
         $post_data['class'] = $class;
         $post_data['name'] = $name;
+        $post_data['shop_active'] = $shop_active;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['metadata'] = json_encode($metadata);
         $post_data['seo'] = json_encode($seo);
@@ -516,17 +520,19 @@ class SleekShopRequest
      * @param array $availability The availability informations for the product
      * @return array The result of the request
      */
-    public function update_product(int $id_product, string $name, array $attributes, array $metadata, array $seo, array $availability): array
+    public function update_product(int $id_product, string $name, int $shop_active, array $attributes, array $metadata, array $seo, array $availability): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'update_product';
         $post_data['id_product'] = $id_product;
         $post_data['name'] = $name;
+        $post_data['shop_active'] = $shop_active;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['metadata'] = json_encode($metadata);
         $post_data['seo'] = json_encode($seo);
         $post_data['availability'] = json_encode($availability);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -535,19 +541,21 @@ class SleekShopRequest
      *
      * @param int $id_product The id of the product
      * @param string $name The name of the variation
+     * @param int $shop_active
      * @param array $attributes The attributes for the variation
      * @param array $metadata The metadata for the variation
      * @param array $seo The seo informations for the variation
      * @param array $availability The availability informations for the variation
      * @return array The result of the request
      */
-    public function create_variation(int $id_product, string $name, array $attributes, array $metadata, array $seo, array $availability): array
+    public function create_variation(int $id_product, string $name, int $shop_active, array $attributes, array $metadata, array $seo, array $availability): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'create_variation';
         $post_data['id_product'] = $id_product;
         $post_data['name'] = $name;
+        $post_data['shop_active'] = $shop_active;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['metadata'] = json_encode($metadata);
         $post_data['seo'] = json_encode($seo);
@@ -610,17 +618,19 @@ class SleekShopRequest
      *
      * @param string $class The class of the content
      * @param string $name The name of the content
+     * @param int $shop_active
      * @param array $attributes The attributes for the content
      * @param array $seo The seo informations for the content
      * @return array The result of the request
      */
-    public function create_content(string $class, string $name, array $attributes, array $seo): array
+    public function create_content(string $class, string $name, int $shop_active, array $attributes, array $seo): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'create_content';
         $post_data['class'] = $class;
         $post_data['name'] = $name;
+        $post_data['shop_active'] = $shop_active;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['seo'] = json_encode($seo);
         return $this->snd_request($this->server, $post_data);
@@ -635,13 +645,14 @@ class SleekShopRequest
      * @param array $seo The seo informations for the content
      * @return array The result of the request
      */
-    public function update_content(int $id_content, string $name, array $attributes, array $seo): array
+    public function update_content(int $id_content, string $name, int $shop_active, array $attributes, array $seo): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'update_content';
         $post_data['id_content'] = $id_content;
         $post_data['name'] = $name;
+        $post_data['shop_active'] = $shop_active;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['seo'] = json_encode($seo);
         return $this->snd_request($this->server, $post_data);
@@ -1120,11 +1131,12 @@ class SleekShopRequest
      * @param string $token The login token
      * @return array The server response
      */
-    public function instant_login(string $token = ''): array
+    public function instant_login(string $token = '', string $application_token = ''): array
     {
         $post_data = $this->post_data;
         $post_data['request'] = 'instant_login';
         $post_data['token'] = $token;
+        $post_data['application_token'] = $application_token;
         return $this->snd_request($this->server, $post_data);
     }
 

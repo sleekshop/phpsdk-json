@@ -75,7 +75,7 @@ class sleekSDK {
      */
     public function PaymentCtl(): PaymentCtl
     {
-        return new PaymentCtl(self::$request);
+        return new PaymentCtl($this->request);
     }
 
     /**
@@ -105,7 +105,7 @@ class sleekSDK {
      */
     public function UserCtl(): UserCtl
     {
-        return new UserCtl(self::$request);
+        return new UserCtl($this->request);
     }
 
 }

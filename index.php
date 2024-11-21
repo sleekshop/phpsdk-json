@@ -36,7 +36,21 @@ try {
 //    $req = $sleekshop->CartCtl()->Clear("1732038037E4bzdLcl7keR8ghm0y2G0GMU736M3Qty");
 
 //    $req = $sleekshop->CategoriesCtl()->GetCategories(2);
-    $req = $sleekshop->CategoriesCtl()->GetProductsInCategory(74);
+//    $req = $sleekshop->CategoriesCtl()->GetProductsInCategory(74);
+//    $req = $sleekshop->CategoriesCtl()->GetContentsInCategory(1);
+//    $req = $sleekshop->CategoriesCtl()->GetContentsInCategory(1);
+
+//    $req = $sleekshop->PaymentCtl()->GetPaymentMethods();
+
+//    $req = $sleekshop->ShopobjectsCtl()->GetShopobjects(1);
+//    $req = $sleekshop->ShopobjectsCtl()->SeoGetShopobjects('start');
+//    $req = $sleekshop->ShopobjectsCtl()->GetProductDetails(6696);
+//    $req = $sleekshop->ShopobjectsCtl()->GetContentDetails(6951);
+//    $req = $sleekshop->ShopobjectsCtl()->SeoGetProductDetails('2111313319');
+//    $req = $sleekshop->ShopobjectsCtl()->SeoGetContentDetails('imprint');
+//    $req = $sleekshop->ShopobjectsCtl()->SearchProducts(['main.name' => ['LIKE', '2111313319']]);
+
+    $req = $sleekshop->UserCtl()->GetUserById(1);
 } catch (Exception $e) {
     echo $e->getMessage();
     die();

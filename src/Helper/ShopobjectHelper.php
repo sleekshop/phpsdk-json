@@ -144,6 +144,23 @@ class ShopobjectHelper
     }
 
     /**
+     * This function converts the product search result
+     *
+     * @param SleekShopRequest $request
+     * @param array $json
+     * @return array
+     */
+    public static function convert_product_search_result(SleekShopRequest $request, array $json = []): array
+    {
+        $result = [];
+        $result['count'] = (int)$json['count'];
+        foreach ($json['result'] as $so) {
+            $result['products'][$so['name']] = self::get_shopobject_from_json($request, $so);
+        }
+        return $result;
+    }
+
+    /**
      * This function returns the contents from a JSON array and creates a chain
      *
      * @param SleekShopRequest $request
@@ -216,6 +233,8 @@ class ShopobjectHelper
         $result['products_count'] = (int)$json['response']['products_count'];
         $result['contents'] = self::get_contents_from_json($request, $json['response']['contents']);
         $result['contents_count'] = (int)$json['response']['contents_count'];
-        return $result;
+
+        $json['response'] = $result;
+        return $json;
     }
 }
