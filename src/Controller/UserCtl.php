@@ -3,14 +3,14 @@
 namespace Sleekshop\Controller;
 
 use Sleekshop\Helper\UserHelper;
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 
 class UserCtl
 {
 
-    private SleekShopRequest $request;
+    private SleekshopRequest $request;
 
-    public function __construct(SleekShopRequest $request)
+    public function __construct(SleekshopRequest $request)
     {
         $this->request = $request;
     }

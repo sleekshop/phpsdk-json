@@ -2,14 +2,14 @@
 
 namespace Sleekshop\Controller;
 
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 
 class PaymentCtl
 {
 
-    private SleekShopRequest $request;
+    private SleekshopRequest $request;
 
-    public function __construct(SleekShopRequest $request)
+    public function __construct(SleekshopRequest $request)
     {
         $this->request = $request;
     }

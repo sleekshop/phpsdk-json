@@ -2,7 +2,7 @@
 
 namespace Sleekshop\Helper;
 
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 
 class UserHelper
 {

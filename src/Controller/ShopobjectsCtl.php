@@ -3,14 +3,14 @@
 namespace Sleekshop\Controller;
 
 use Sleekshop\Helper\ShopobjectHelper;
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 
 class ShopobjectsCtl
 {
 
-    private SleekShopRequest $request;
+    private SleekshopRequest $request;
 
-    public function __construct(SleekShopRequest $request)
+    public function __construct(SleekshopRequest $request)
     {
         $this->request = $request;
     }
@@ -123,28 +123,6 @@ class ShopobjectsCtl
             return $json;
         }
         $json['response'] = ShopobjectHelper::get_shopobject_from_json($this->request, $json['response']);
-        return $json;
-    }
-
-    /**
-     * This function searches for products based on the given constraints
-     *
-     * @param array $constraint
-     * @param int $left_limit
-     * @param int $right_limit
-     * @param array $order_columns
-     * @param string $order_type
-     * @param string|null $lang
-     * @param array $needed_attributes
-     * @return array
-     */
-    public function SearchProducts(array $constraint = [], int $left_limit = 0, int $right_limit = 0, array $order_columns = [], string $order_type = 'ASC', string $lang = null, array $needed_attributes = []): array
-    {
-        $json = $this->request->search_products($constraint, $left_limit, $right_limit, $order_columns, $order_type, $lang, $needed_attributes);
-        if ($json['status'] == 'error') {
-            return $json;
-        }
-        $json['response'] = ShopobjectHelper::convert_product_search_result($this->request, $json['response']);
         return $json;
     }
 

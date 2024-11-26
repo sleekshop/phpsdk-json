@@ -2,7 +2,7 @@
 
 namespace Sleekshop\Helper;
 
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 
 class ShopobjectHelper
 {
@@ -26,11 +26,11 @@ class ShopobjectHelper
     /**
      * This function converts a shop object from JSON to an array
      *
-     * @param SleekShopRequest $request
+     * @param SleekshopRequest $request
      * @param array $so
      * @return array
      */
-    public static function get_shopobject_from_json(SleekShopRequest $request, array $so = []): array
+    public static function get_shopobject_from_json(SleekshopRequest $request, array $so = []): array
     {
         $piecearray = [];
         $piecearray['id'] = (int)$so['id'];
@@ -130,11 +130,11 @@ class ShopobjectHelper
     /**
      * This function returns the products from a JSON array
      *
-     * @param SleekShopRequest $request
+     * @param SleekshopRequest $request
      * @param array $json
      * @return array
      */
-    public static function get_products_from_json(SleekShopRequest $request, array $json = []): array
+    public static function get_products_from_json(SleekshopRequest $request, array $json = []): array
     {
         $result = [];
         foreach ($json as $so) {
@@ -143,31 +143,26 @@ class ShopobjectHelper
         return $result;
     }
 
-    /**
-     * This function converts the product search result
-     *
-     * @param SleekShopRequest $request
-     * @param array $json
-     * @return array
-     */
-    public static function convert_product_search_result(SleekShopRequest $request, array $json = []): array
-    {
-        $result = [];
-        $result['count'] = (int)$json['count'];
-        foreach ($json['result'] as $so) {
-            $result['products'][$so['name']] = self::get_shopobject_from_json($request, $so);
+    static function getValueByChainingField($chaining_field, $obj) {
+        $current = $obj; // Start with the root object or array
+        foreach ($chaining_field as $key) { // Traverse the keys in chaining_field
+            if (is_array($current) && array_key_exists($key, $current)) {
+                $current = $current[$key]; // Move to the next level
+            } else {
+                return null; // Return null if a key doesn't exist
+            }
         }
-        return $result;
+        return $current;
     }
 
     /**
      * This function returns the contents from a JSON array and creates a chain
      *
-     * @param SleekShopRequest $request
+     * @param SleekshopRequest $request
      * @param array $json
      * @return array
      */
-    public static function get_contents_from_json(SleekShopRequest $request, array $json = []): array
+    public static function get_contents_from_json(SleekshopRequest $request, array $json = []): array
     {
         $result = [];
         $prev = 'not_set';
@@ -177,6 +172,17 @@ class ShopobjectHelper
         $layoutmax = 1;
         $index = 0;
         $result['chain'] = [];
+
+        $obj = [
+            "name" => [
+                "test" => "123"
+            ],
+            "test" => "test",
+            "lol" => "lol"
+        ];
+
+        print_r(self::getValueByChainingField(["name"]["test"], $obj)); // TODO: make this work dynamically
+        die();
 
         foreach ($json as $so) {
             $result[$so['name']] = ShopobjectHelper::get_shopobject_from_json($request, $so);
@@ -219,11 +225,11 @@ class ShopobjectHelper
     /**
      * This function processes the JSON response and extracts the necessary details
      *
-     * @param SleekShopRequest $request
+     * @param SleekshopRequest $request
      * @param array $json
      * @return array
      */
-    public static function process_shopobjects_response(SleekShopRequest $request, array $json): array
+    public static function process_shopobjects_response(SleekshopRequest $request, array $json): array
     {
         if ($json['status'] == 'error') {
             return $json;

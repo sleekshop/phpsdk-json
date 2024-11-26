@@ -6,12 +6,20 @@
 
 namespace Sleekshop;
 
+use Sleekshop\Controller\ApplicationCtl;
 use Sleekshop\Controller\CartCtl;
 use Sleekshop\Controller\CategoriesCtl;
+use Sleekshop\Controller\ClassCtl;
+use Sleekshop\Controller\CouponCtl;
+use Sleekshop\Controller\OrderCtl;
 use Sleekshop\Controller\PaymentCtl;
-use Sleekshop\Controller\ShopobjectsCtl;
+use Sleekshop\Controller\SearchCtl;
+use Sleekshop\Controller\ServerCtl;
 use Sleekshop\Controller\SessionCtl;
+use Sleekshop\Controller\ShopobjectsCtl;
 use Sleekshop\Controller\UserCtl;
+use Sleekshop\Controller\WarehouseCtl;
+use Sleekshop\Controller\WebhookCtl;
 use Sleekshop\Options\DefaultOptions;
 
 class sleekSDK {
@@ -22,7 +30,7 @@ class sleekSDK {
     private string $licence_secret_key;
     private DefaultOptions $options;
 
-    private SleekShopRequest $request;
+    private SleekshopRequest $request;
 
     /**
      * @param string $server             The server URL
@@ -37,17 +45,25 @@ class sleekSDK {
         $this->licence_secret_key = $licence_secret_key;
         $this->options = $options;
 
-        $this->request = new SleekShopRequest($this->server, $this->licence_username, $this->licence_password, $this->licence_secret_key, $this->options);
+        $this->request = new SleekshopRequest($this->server, $this->licence_username, $this->licence_password, $this->licence_secret_key, $this->options);
     }
 
     /**
-     * Get a new instance of SleekShopRequest
+     * Get a new instance of SleekshopRequest
      *
-     * @return SleekShopRequest
+     * @return SleekshopRequest
      */
-    public function SleekShopRequest(): SleekShopRequest
+    public function SleekShopRequest(): SleekshopRequest
     {
         return new $this->request;
+    }
+
+    /**
+     * @return ApplicationCtl
+     */
+    public function ApplicationCtl(): ApplicationCtl
+    {
+        return new ApplicationCtl($this->request);
     }
 
     /**
@@ -69,6 +85,36 @@ class sleekSDK {
     }
 
     /**
+     * Returns a new instance of ClassCtl
+     *
+     * @return ClassCtl
+     */
+    public function ClassCtl(): ClassCtl
+    {
+        return new ClassCtl($this->request);
+    }
+
+    /**
+     * Returns a new instance of CouponCtl
+     *
+     * @return CouponCtl
+     */
+    public function CouponCtl(): CouponCtl
+    {
+        return new CouponCtl($this->request);
+    }
+
+    /**
+     * Returns a new instance of OrderCtl
+     *
+     * @return OrderCtl
+     */
+    public function OrderCtl(): OrderCtl
+    {
+        return new OrderCtl($this->request);
+    }
+
+    /**
      * Returns a new instance of PaymentCtl
      *
      * @return PaymentCtl
@@ -76,6 +122,26 @@ class sleekSDK {
     public function PaymentCtl(): PaymentCtl
     {
         return new PaymentCtl($this->request);
+    }
+
+    /**
+     * Returns a new instance of SearchCtl
+     *
+     * @return SearchCtl
+     */
+    public function SearchCtl(): SearchCtl
+    {
+        return new SearchCtl($this->request);
+    }
+
+    /**
+     * Returns a new instance of ServerCtl
+     *
+     * @return ServerCtl
+     */
+    public function ServerCtl(): ServerCtl
+    {
+        return new ServerCtl($this->request);
     }
 
     /**
@@ -106,6 +172,26 @@ class sleekSDK {
     public function UserCtl(): UserCtl
     {
         return new UserCtl($this->request);
+    }
+
+    /**
+     * Returns a new instance of WarehouseCtl
+     *
+     * @return WarehouseCtl
+     */
+    public function WarehouseCtl(): WarehouseCtl
+    {
+        return new WarehouseCtl($this->request);
+    }
+
+    /**
+     * Returns a new instance of WebhookCtl
+     *
+     * @return WebhookCtl
+     */
+    public function WebhookCtl(): WebhookCtl
+    {
+        return new WebhookCtl($this->request);
     }
 
 }

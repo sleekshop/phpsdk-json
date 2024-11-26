@@ -2,14 +2,14 @@
 
 namespace Sleekshop\Controller;
 
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 use Sleekshop\Options\SessionOptions;
 
 class SessionCtl
 {
-    private SleekShopRequest $request;
+    private SleekshopRequest $request;
 
-    public function __construct(SleekShopRequest $request)
+    public function __construct(SleekshopRequest $request)
     {
         $this->request = $request;
     }

@@ -2,7 +2,7 @@
 
 namespace Sleekshop\Helper;
 
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 
 class CategoriesHelper
 {
@@ -10,10 +10,10 @@ class CategoriesHelper
      * Processes the JSON response and extracts the necessary details for categories.
      *
      * @param array $json
-     * @param SleekShopRequest $request
+     * @param SleekshopRequest $request
      * @return array
      */
-    public static function process_categories_response(array $json, SleekShopRequest $request): array
+    public static function process_categories_response(array $json, SleekshopRequest $request): array
     {
         $result = [];
         foreach ($json['categories'] as $shopCategory) {
@@ -38,7 +38,7 @@ class CategoriesHelper
         return $result;
     }
 
-    public static function process_products_response(array $json, SleekShopRequest $request): array
+    public static function process_products_response(array $json, SleekshopRequest $request): array
     {
         if ($json['status'] == 'error') {
             return $json;
@@ -49,7 +49,7 @@ class CategoriesHelper
         return $result;
     }
 
-    public static function process_contents_response(array $json, SleekShopRequest $request): array
+    public static function process_contents_response(array $json, SleekshopRequest $request): array
     {
         if ($json['status'] == 'error') {
             return $json;

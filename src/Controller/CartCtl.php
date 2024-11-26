@@ -3,14 +3,14 @@
 namespace Sleekshop\Controller;
 
 use Sleekshop\Helper\CartHelper;
-use Sleekshop\SleekShopRequest;
+use Sleekshop\SleekshopRequest;
 
 class CartCtl
 {
 
-    private SleekShopRequest $request;
+    private SleekshopRequest $request;
 
-    public function __construct(SleekShopRequest $request)
+    public function __construct(SleekshopRequest $request)
     {
         $this->request = $request;
     }

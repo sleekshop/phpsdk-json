@@ -5,13 +5,13 @@ namespace Sleekshop;
 use Sleekshop\Options\DefaultOptions;
 
 /**
- * Class SleekShopRequest
+ * Class SleekshopRequest
  *
  * @package Sleekshop
  *
  * @see https://docs.sleekshop.io
  */
-class SleekShopRequest
+class SleekshopRequest
 {
     private string $server;
     private string $licence_username;
@@ -23,9 +23,10 @@ class SleekShopRequest
     public string $default_language;
     public int $product_image_thumb_height = 100;
     public int $categories_id = 2;
+    public array $chaining_field = ['class'];
 
     /**
-     * Initializes a new instance of the SleekShopRequest - class.
+     * Initializes a new instance of the SleekshopRequest - class.
      *
      * @param string $server The server URL
      * @param string $licence_username The Sleekshop API licence username
@@ -34,12 +35,13 @@ class SleekShopRequest
      * @param DefaultOptions|null $options The options to be used
      */
     public function __construct(
-        string $server,
-        string $licence_username,
-        string $licence_password,
-        string $licence_secret_key = '',
+        string         $server,
+        string         $licence_username,
+        string         $licence_password,
+        string         $licence_secret_key = '',
         DefaultOptions $options = null
-    ) {
+    )
+    {
         $this->server = $server;
         $this->licence_username = $licence_username;
         $this->licence_password = $licence_password;
@@ -54,6 +56,7 @@ class SleekShopRequest
         $this->product_image_thumb_height = $options->product_image_thumb_height;
         $this->template_path = $options->template_path;
         $this->categories_id = $options->categories_id;
+        $this->chaining_field = $options->chaining_field;
     }
 
     // *****************************************************************
@@ -1198,109 +1201,22 @@ class SleekShopRequest
      * This function updates the order details for a given id_order
      *
      * @param int $id_order The id of the order you want to update.
-     * @param int $id_payment_method A valid id specifying the desired payment method. This id can be identified with the get_payment_methods request.
-     * @param int $id_delivery_method A valid delivery id.
-     * @param string $order_state A valid order state. Valid values: OPEN, PROCESSING, CLOSED, and CANCELED.
-     * @param string $order_payment_state Here you can set the payment state. Valid values: PAYMENT_NOT_RECEIVED or PAYMENT_RECEIVED.
-     * @param string $order_delivery_state Here you can set the delivery state. Valid values: PROCESSING or CLOSED.
-     * @param string $delivery_companyname The delivery company name.
-     * @param string $delivery_department The delivery department.
-     * @param string $delivery_salutation The delivery salutation.
-     * @param string $delivery_firstname The delivery first name.
-     * @param string $delivery_lastname The delivery last name.
-     * @param string $delivery_street The delivery street.
-     * @param string $delivery_number The delivery number.
-     * @param string $delivery_zip The delivery zip code.
-     * @param string $delivery_state The delivery state.
-     * @param string $delivery_city The delivery city.
-     * @param string $delivery_country A valid delivery country code.
-     * @param string $invoice_companyname The invoice company name.
-     * @param string $invoice_department The invoice department.
-     * @param string $invoice_salutation The invoice salutation.
-     * @param string $invoice_firstname The invoice first name.
-     * @param string $invoice_lastname The invoice last name.
-     * @param string $invoice_street The invoice street.
-     * @param string $invoice_number The invoice number.
-     * @param string $invoice_zip The invoice zip code.
-     * @param string $invoice_state The invoice state.
-     * @param string $invoice_city The invoice city.
-     * @param string $invoice_country A valid invoice country code.
-     * @param string $note A note that has to be attached to the order.
-     * @param string $email A valid email for the order.
-     * @param string $phone A phone number that has to be attached to the order.
-     * @param array $attributes An array containing additional attributes if needed.
+     * @param array $args
      * @return array The result of the request
      */
     public function update_order_details(
-        int    $id_order = 0,
-        int    $id_payment_method = 0,
-        int    $id_delivery_method = 0,
-        string $order_state = '',
-        string $order_payment_state = '',
-        string $order_delivery_state = '',
-        string $delivery_companyname = '',
-        string $delivery_department = '',
-        string $delivery_salutation = '',
-        string $delivery_firstname = '',
-        string $delivery_lastname = '',
-        string $delivery_street = '',
-        string $delivery_number = '',
-        string $delivery_zip = '',
-        string $delivery_state = '',
-        string $delivery_city = '',
-        string $delivery_country = '',
-        string $invoice_companyname = '',
-        string $invoice_department = '',
-        string $invoice_salutation = '',
-        string $invoice_firstname = '',
-        string $invoice_lastname = '',
-        string $invoice_street = '',
-        string $invoice_number = '',
-        string $invoice_zip = '',
-        string $invoice_state = '',
-        string $invoice_city = '',
-        string $invoice_country = '',
-        string $note = '',
-        string $email = '',
-        string $phone = '',
-        array  $attributes = []
+        int   $id_order = 0,
+        array $args = []
     ): array
     {
         $post_data = $this->post_data;
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'update_order_details';
         $post_data['id_order'] = $id_order;
-        $post_data['id_payment_method'] = $id_payment_method;
-        $post_data['id_delivery_method'] = $id_delivery_method;
-        $post_data['order_state'] = $order_state;
-        $post_data['order_payment_state'] = $order_payment_state;
-        $post_data['order_delivery_state'] = $order_delivery_state;
-        $post_data['delivery_companyname'] = $delivery_companyname;
-        $post_data['delivery_department'] = $delivery_department;
-        $post_data['delivery_salutation'] = $delivery_salutation;
-        $post_data['delivery_firstname'] = $delivery_firstname;
-        $post_data['delivery_lastname'] = $delivery_lastname;
-        $post_data['delivery_street'] = $delivery_street;
-        $post_data['delivery_number'] = $delivery_number;
-        $post_data['delivery_zip'] = $delivery_zip;
-        $post_data['delivery_state'] = $delivery_state;
-        $post_data['delivery_city'] = $delivery_city;
-        $post_data['delivery_country'] = $delivery_country;
-        $post_data['invoice_companyname'] = $invoice_companyname;
-        $post_data['invoice_department'] = $invoice_department;
-        $post_data['invoice_salutation'] = $invoice_salutation;
-        $post_data['invoice_firstname'] = $invoice_firstname;
-        $post_data['invoice_lastname'] = $invoice_lastname;
-        $post_data['invoice_street'] = $invoice_street;
-        $post_data['invoice_number'] = $invoice_number;
-        $post_data['invoice_zip'] = $invoice_zip;
-        $post_data['invoice_state'] = $invoice_state;
-        $post_data['invoice_city'] = $invoice_city;
-        $post_data['invoice_country'] = $invoice_country;
-        $post_data['note'] = $note;
-        $post_data['email'] = $email;
-        $post_data['phone'] = $phone;
-        $post_data['attributes'] = json_encode($attributes);
+        foreach ($args as $key => $value) {
+            if ($key == "attributes") $value = json_encode($value);
+            $post_data[$key] = $value;
+        }
         return $this->snd_request($this->server, $post_data);
     }
 
