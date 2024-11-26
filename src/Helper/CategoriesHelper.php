@@ -38,6 +38,13 @@ class CategoriesHelper
         return $result;
     }
 
+    /**
+     * Processes the JSON response and extracts the necessary details for products.
+     *
+     * @param array $json The JSON response containing product data.
+     * @param SleekshopRequest $request The SleekshopRequest object used for making requests.
+     * @return array The processed product details.
+     */
     public static function process_products_response(array $json, SleekshopRequest $request): array
     {
         if ($json['status'] == 'error') {
@@ -49,6 +56,13 @@ class CategoriesHelper
         return $result;
     }
 
+    /**
+     * Processes the JSON response and extracts the necessary details for contents.
+     *
+     * @param array $json The JSON response received from the API call.
+     * @param SleekshopRequest $request The request object used to make additional API calls if necessary.
+     * @return array The extracted content details along with the count of contents.
+     */
     public static function process_contents_response(array $json, SleekshopRequest $request): array
     {
         if ($json['status'] == 'error') {

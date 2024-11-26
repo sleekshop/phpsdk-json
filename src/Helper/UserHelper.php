@@ -7,6 +7,12 @@ use Sleekshop\SleekshopRequest;
 class UserHelper
 {
 
+    /**
+     * Converts the user response JSON array into a formatted array.
+     *
+     * @param array $json The input JSON array containing user data.
+     * @return array The formatted array with user data.
+     */
     public static function convert_user_response(array $json): array
     {
         $result = [];

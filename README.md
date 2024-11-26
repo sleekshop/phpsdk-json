@@ -15,7 +15,7 @@ For more information about the Sleekshop API, please refer to the [official docu
 ### Using composer
 
 ```
-composer require sleekcommerce/sleekshop-phpsdk-json:v2.0.0
+composer require sleekcommerce/sleekshop-phpsdk-json:v2
 ```
 
 ## Usage
@@ -28,7 +28,13 @@ include 'vendor/autoload.php';
 use Sleekshop\sleekSDK;
 use Sleekshop\Options\DefaultOptions; // optional
 
-$defaultOptions = new DefaultOptions('en_EN', 'sleekshop', 100); // optional
+// optional
+$defaultOptions = new DefaultOptions(
+    'de_DE', // default language if not provided in call
+    'sleekshop', // token e.g. cookie name 
+    100, // product image thumbnail height
+    'id' // chaining field
+);
 
 $sleekshop = new sleekSDK(
     'https://<yourInstance>.sleekshop.net/srv/service/',

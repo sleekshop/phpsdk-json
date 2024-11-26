@@ -173,23 +173,52 @@ class ShopobjectHelper
         $index = 0;
         $result['chain'] = [];
 
-        $obj = [
-            "name" => [
-                "test" => "123"
-            ],
-            "test" => "test",
-            "lol" => "lol"
-        ];
+        // Split the chaining field and check if we have a specific value field
+        $chainingField = $request->chaining_field;
+        $valueField = null;
 
-        print_r(self::getValueByChainingField(["name"]["test"], $obj)); // TODO: make this work dynamically
-        die();
+        // Check if there's a specific field requested at the end (after ':')
+        if (strpos($chainingField, ':') !== false) {
+            list($chainingField, $valueField) = explode(':', $chainingField);
+        }
+
+        $chainingFields = explode('.', $chainingField);
 
         foreach ($json as $so) {
             $result[$so['name']] = ShopobjectHelper::get_shopobject_from_json($request, $so);
             $result['byclass'][$so['class']][] = $result[$so['name']];
 
-            if (isset($so['attributes']['layout'])) {
-                $current = $so['attributes']['layout']['value'];
+            // Get the chained value dynamically
+            $chainedValue = $so;
+
+            // Special handling for direct properties
+            if (count($chainingFields) === 1 && isset($so[$chainingFields[0]])) {
+                $chainedValue = $so[$chainingFields[0]];
+            } else {
+                // Handle nested properties
+                foreach ($chainingFields as $field) {
+                    if (is_array($chainedValue) && isset($chainedValue[$field])) {
+                        $chainedValue = $chainedValue[$field];
+                    } else {
+                        $chainedValue = null;
+                        break;
+                    }
+                }
+            }
+
+            // Get the final value based on valueField if specified
+            $finalValue = null;
+            if ($chainedValue !== null) {
+                if ($valueField !== null && is_array($chainedValue) && isset($chainedValue[$valueField])) {
+                    $finalValue = $chainedValue[$valueField];
+                } else {
+                    $finalValue = $chainedValue;
+                }
+            }
+
+            // Only process if we successfully found a value
+            if ($finalValue !== null) {
+                $current = $finalValue;
                 $result['layouts'][$current] = 1;
                 $layoutindex = ($current != $prev) ? 0 : $layoutindex + 1;
                 $layoutmax = $layoutindex + 1;

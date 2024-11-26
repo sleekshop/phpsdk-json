@@ -30,7 +30,7 @@ class CartCtl
      * @param array<object> $attributes
      * @return array
      */
-    public function Add(string $session = "", int $id_product = 0, int $quantity = 0, string $price_field = "", string $name_field = "", string $description_field = "", string $language = null, string $element_type = "PRODUCT_GR", int $id_parent_element = 0, array $attributes = []): array
+    public function AddToCart(string $session = "", int $id_product = 0, int $quantity = 0, string $price_field = "", string $name_field = "", string $description_field = "", string $language = null, string $element_type = "PRODUCT_GR", int $id_parent_element = 0, array $attributes = []): array
     {
         $json = $this->request->add_to_cart($session, $id_product, $quantity, $price_field, $name_field, $description_field, $language, $element_type, $id_parent_element, $attributes);
         if ($json['status'] !== "success") {
@@ -47,7 +47,7 @@ class CartCtl
      * @param int $id_element
      * @return array
      */
-    public function Del(string $session = "", int $id_element = 0): array
+    public function DelFromCart(string $session = "", int $id_element = 0): array
     {
         $json = $this->request->del_from_cart($session, $id_element);
         if ($json['status'] !== 'success') {
@@ -64,7 +64,7 @@ class CartCtl
      * @param int $id_element
      * @return array
      */
-    public function Sub(string $session = "", int $id_element = 0): array
+    public function SubFromCart(string $session = "", int $id_element = 0): array
     {
         $json = $this->request->sub_from_cart($session, $id_element);
         if ($json['status'] !== "success") {
@@ -80,7 +80,7 @@ class CartCtl
      * @param string $session
      * @return array
      */
-    public function Get(string $session = ""): array
+    public function GetCart(string $session = ""): array
     {
         $json = $this->request->get_cart($session);
 
@@ -99,7 +99,7 @@ class CartCtl
      * @param string $session
      * @return array
      */
-    public function Clear(string $session = ""): array
+    public function ClearCart(string $session = ""): array
     {
         $json = $this->request->clear_cart($session);
         if ($json['status'] !== "success") {

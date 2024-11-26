@@ -47,7 +47,7 @@ class PaymentCtl
      * @param array $args
      * @return array|string[]
      */
-    public function DoPayment(int $id_order = 0, array $args = [])
+    public function DoPayment(int $id_order = 0, array $args = []): array
     {
         $json = $this->request->do_payment($id_order, $args);
         if ($json['status'] == 'error') {
@@ -70,7 +70,7 @@ class PaymentCtl
      * @param array $delivery_costs
      * @return array|string[]
      */
-    public function AddDeliveryCosts(string $session = "", array $delivery_costs = [])
+    public function AddDeliveryCosts(string $session = "", array $delivery_costs = []): array
     {
         return $this->request->add_delivery_costs($session, $delivery_costs);
     }

@@ -2,6 +2,7 @@
   "name": "sleekcommerce/sleekshop-phpsdk-json",
   "type": "library",
   "description": "Sleekshop PHP SDK for the Sleekshop API",
+  "version": "2.0.0",
   "keywords": [
     "sleekshop",
     "sdk"

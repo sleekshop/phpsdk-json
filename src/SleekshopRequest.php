@@ -22,8 +22,7 @@ class SleekshopRequest
     public string $token = 'sleekshop';
     public string $default_language;
     public int $product_image_thumb_height = 100;
-    public int $categories_id = 2;
-    public array $chaining_field = ['class'];
+    public string $chaining_field = 'class';
 
     /**
      * Initializes a new instance of the SleekshopRequest - class.
@@ -54,8 +53,6 @@ class SleekshopRequest
         $this->default_language = $options->default_language;
         $this->token = $options->token;
         $this->product_image_thumb_height = $options->product_image_thumb_height;
-        $this->template_path = $options->template_path;
-        $this->categories_id = $options->categories_id;
         $this->chaining_field = $options->chaining_field;
     }
 
@@ -120,6 +117,7 @@ class SleekshopRequest
     public function get_products_in_category(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'get_products_in_category';
         $post_data['id_category'] = $id_category;
@@ -129,6 +127,7 @@ class SleekshopRequest
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -147,6 +146,7 @@ class SleekshopRequest
     public function get_contents_in_category(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'get_contents_in_category';
         $post_data['id_category'] = $id_category;
@@ -156,6 +156,7 @@ class SleekshopRequest
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -174,6 +175,7 @@ class SleekshopRequest
     public function get_shopobjects_in_category(int $id_category = 0, string $lang = null, array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = []): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'get_shopobjects_in_category';
         $post_data['id_category'] = $id_category;
@@ -183,6 +185,7 @@ class SleekshopRequest
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -201,6 +204,7 @@ class SleekshopRequest
     public function dump_category(int $id_category = 0, string $lang = null, $country = '', array $order_columns = [], string $order = 'ASC', int $left_limit = 0, int $right_limit = 0, array $needed_attributes = [], int $depth = 0): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'dump_category';
         $post_data['id_category'] = $id_category;
@@ -238,6 +242,7 @@ class SleekshopRequest
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -262,6 +267,7 @@ class SleekshopRequest
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -317,6 +323,7 @@ class SleekshopRequest
         $post_data['labels'] = json_encode($labels);
         $post_data['attributes'] = json_encode($attributes);
         $post_data['seo'] = json_encode($seo);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -340,6 +347,7 @@ class SleekshopRequest
         $post_data['labels'] = json_encode($labels);
         $post_data['attributes'] = json_encode($attributes);
         $post_data['seo'] = json_encode($seo);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -355,6 +363,7 @@ class SleekshopRequest
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'delete_category';
         $post_data['id_category'] = $id_category;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -374,6 +383,7 @@ class SleekshopRequest
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'get_class_details';
         $post_data['id_class'] = $id_class;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -391,6 +401,7 @@ class SleekshopRequest
         $post_data['request'] = 'create_class';
         $post_data['name'] = $name;
         $post_data['type'] = $type;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -406,6 +417,7 @@ class SleekshopRequest
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'delete_class';
         $post_data['id_class'] = $id_class;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -423,6 +435,7 @@ class SleekshopRequest
         $post_data['request'] = 'create_class_attributes';
         $post_data['id_class'] = $id_class;
         $post_data['attributes'] = json_encode($attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -440,6 +453,7 @@ class SleekshopRequest
         $post_data['request'] = 'delete_class_attributes';
         $post_data['id_class'] = $id_class;
         $post_data['attributes'] = json_encode($attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -463,6 +477,7 @@ class SleekshopRequest
         $post_data['language'] = $lang;
         $post_data['id_product'] = $id_product;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -476,13 +491,11 @@ class SleekshopRequest
      */
     public function seo_get_product_details(string $permalink = '', array $needed_attributes = []): array
     {
-        // Set up the request data
         $post_data = $this->post_data;
-        $post_data['request'] = 'seo_get_product_details'; // Set the request type
-        $post_data['permalink'] = $permalink; // Set the permalink of the product to retrieve
-        $post_data['needed_attributes'] = json_encode($needed_attributes); // Encode the needed attributes as JSON
+        $post_data['request'] = 'seo_get_product_details';
+        $post_data['permalink'] = $permalink;
+        $post_data['needed_attributes'] = json_encode($needed_attributes);
 
-        // Send the request to the server and return the response
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -509,6 +522,7 @@ class SleekshopRequest
         $post_data['metadata'] = json_encode($metadata);
         $post_data['seo'] = json_encode($seo);
         $post_data['availability'] = json_encode($availability);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -563,6 +577,7 @@ class SleekshopRequest
         $post_data['metadata'] = json_encode($metadata);
         $post_data['seo'] = json_encode($seo);
         $post_data['availability'] = json_encode($availability);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -578,6 +593,7 @@ class SleekshopRequest
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'delete_product';
         $post_data['id_product'] = $id_product;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -595,10 +611,12 @@ class SleekshopRequest
     public function get_content_details(int $id_content = 0, string $lang = null): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'get_content_details';
         $post_data['language'] = $lang;
         $post_data['id_content'] = $id_content;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -613,6 +631,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'seo_get_content_details';
         $post_data['permalink'] = $permalink;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -636,6 +655,7 @@ class SleekshopRequest
         $post_data['shop_active'] = $shop_active;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['seo'] = json_encode($seo);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -658,6 +678,7 @@ class SleekshopRequest
         $post_data['shop_active'] = $shop_active;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['seo'] = json_encode($seo);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -673,6 +694,7 @@ class SleekshopRequest
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'delete_content';
         $post_data['id_content'] = $id_content;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -695,9 +717,9 @@ class SleekshopRequest
     public function search_products(array $constraint = [], int $left_limit = 0, int $right_limit = 0, array $order_columns = [], string $order_type = 'ASC', string $lang = null, array $needed_attributes = []): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'search_products';
-        $i = 0;
         $post_data['constraint'] = json_encode($constraint);
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
@@ -705,6 +727,7 @@ class SleekshopRequest
         $post_data['needed_attributes'] = json_encode($needed_attributes);
         $post_data['order_type'] = $order_type;
         $post_data['language'] = $lang;
+
         return ($this->snd_request($this->server, $post_data));
     }
 
@@ -723,6 +746,7 @@ class SleekshopRequest
     public function search_contents(array $constraint = [], int $left_limit = 0, int $right_limit = 0, array $order_columns = [], string $order_type = 'ASC', string $lang = null, array $needed_attributes = []): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'search_contents';
         $i = 0;
@@ -733,6 +757,7 @@ class SleekshopRequest
         $post_data['needed_attributes'] = json_encode($needed_attributes);
         $post_data['order_type'] = $order_type;
         $post_data['language'] = $lang;
+
         return ($this->snd_request($this->server, $post_data));
     }
 
@@ -748,12 +773,14 @@ class SleekshopRequest
     public function search_orders(array $constraint = [], int $left_limit = 0, int $right_limit = 0, string $lang = null): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'search_orders';
         $post_data['constraint'] = json_encode($constraint);
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['language'] = $lang;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -771,6 +798,7 @@ class SleekshopRequest
     public function search_users(array $constraint = [], array $order_columns = [], string $order_type = 'ASC', int $left_limit = 0, int $right_limit = 0, string $lang = null): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'search_users';
         $post_data['constraint'] = json_encode($constraint);
@@ -779,6 +807,7 @@ class SleekshopRequest
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['language'] = $lang;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -797,6 +826,7 @@ class SleekshopRequest
     public function search_warehouse_entities(array $constraint = [], array $order_columns = [], string $order_type = 'ASC', int $left_limit = 0, int $right_limit = 0, string $lang = null, array $needed_attributes = []): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'search_warehouse_entities';
         $post_data['constraint'] = json_encode($constraint);
@@ -806,6 +836,7 @@ class SleekshopRequest
         $post_data['right_limit'] = $right_limit;
         $post_data['language'] = $lang;
         $post_data['needed_attributes'] = json_encode($needed_attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -823,6 +854,7 @@ class SleekshopRequest
     public function search_classes(array $constraint = [], array $order_columns = [], string $order_type = 'ASC', int $left_limit = 0, int $right_limit = 0, string $lang = null): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'search_classes';
         $post_data['constraint'] = json_encode($constraint);
@@ -831,6 +863,7 @@ class SleekshopRequest
         $post_data['left_limit'] = $left_limit;
         $post_data['right_limit'] = $right_limit;
         $post_data['language'] = $lang;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -845,11 +878,13 @@ class SleekshopRequest
     public function search_distinct_products(array $constraint = [], string $field = '', string $lang = null): array
     {
         $lang = $lang ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'search_distinct_products';
         $post_data['constraint'] = json_encode($constraint);
         $post_data['field'] = $field;
         $post_data['language'] = $lang;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -875,6 +910,7 @@ class SleekshopRequest
     public function add_to_cart(string $session = '', int $id_product = 0, float $quantity = 0, string $price_field = '', string $name_field = '', string $description_field = '', string $language = null, string $element_type = 'PRODUCT', int $id_parent_element = 0, array $attributes = []): array
     {
         $language = $language ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'add_to_cart';
         $post_data['session'] = $session;
@@ -887,6 +923,7 @@ class SleekshopRequest
         $post_data['description_field'] = $description_field;
         $post_data['language'] = $language;
         $post_data['attributes'] = json_encode($attributes);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -903,6 +940,7 @@ class SleekshopRequest
         $post_data['request'] = 'sub_from_cart';
         $post_data['session'] = $session;
         $post_data['id_element'] = $id_element;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -919,6 +957,7 @@ class SleekshopRequest
         $post_data['request'] = 'del_from_cart';
         $post_data['session'] = $session;
         $post_data['id_element'] = $id_element;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -933,6 +972,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'clear_cart';
         $post_data['session'] = $session;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -947,6 +987,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'get_cart';
         $post_data['session'] = $session;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -964,11 +1005,13 @@ class SleekshopRequest
     public function register_user(array $args = [], $language = null): array
     {
         $language = $language ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'register_user';
         $post_data['args'] = json_encode($args);
         $post_data['language'] = $language;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -984,7 +1027,8 @@ class SleekshopRequest
         $post_data['request'] = 'verify_user';
         $post_data['id_user'] = $id_user;
         $post_data['session_id'] = $session_id;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1002,7 +1046,8 @@ class SleekshopRequest
         $post_data['session'] = $session;
         $post_data['username'] = $username;
         $post_data['password'] = $password;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1016,7 +1061,8 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'logout_user';
         $post_data['session'] = $session;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1036,7 +1082,8 @@ class SleekshopRequest
         $post_data['old_passwd'] = $old_password;
         $post_data['new_passwd1'] = $new_password1;
         $post_data['new_passwd2'] = $new_password2;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1050,6 +1097,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'reset_user_password';
         $post_data['args'] = json_encode($args);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1064,7 +1112,8 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'get_user_orders';
         $post_data['session'] = $session;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1078,7 +1127,8 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'get_user_data';
         $post_data['session'] = $session;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1092,7 +1142,8 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'get_user_by_id';
         $post_data['id_user'] = $id_user;
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1108,7 +1159,8 @@ class SleekshopRequest
         $post_data['request'] = 'set_user_data';
         $post_data['session'] = $session;
         $post_data['attributes'] = json_encode($args);
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1125,7 +1177,8 @@ class SleekshopRequest
         $post_data['request'] = 'update_user_data';
         $post_data['id_user'] = $id_user;
         $post_data['attributes'] = json_encode($args);
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1140,6 +1193,7 @@ class SleekshopRequest
         $post_data['request'] = 'instant_login';
         $post_data['token'] = $token;
         $post_data['application_token'] = $application_token;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1163,6 +1217,7 @@ class SleekshopRequest
             if ($key == 'attributes') $value = json_encode($value);
             $post_data[$key] = $value;
         }
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1177,6 +1232,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'get_order_details';
         $post_data['session'] = $session;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1190,10 +1246,12 @@ class SleekshopRequest
     public function get_order_by_id(int $id_order = 0, string $language = null): array
     {
         $language = $language ?? $this->default_language;
+
         $post_data = $this->post_data;
         $post_data['request'] = 'get_order_by_id';
         $post_data['id_order'] = $id_order;
         $post_data['language'] = $language;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1217,6 +1275,7 @@ class SleekshopRequest
             if ($key == "attributes") $value = json_encode($value);
             $post_data[$key] = $value;
         }
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1231,6 +1290,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'checkout';
         $post_data['session'] = $session;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1245,6 +1305,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'get_invoice';
         $post_data['id_order'] = $id_order;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1261,6 +1322,7 @@ class SleekshopRequest
         $post_data['request'] = 'get_order_confirmation';
         $post_data['id_order'] = $id_order;
         $post_data['args'] = json_encode($args);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1273,6 +1335,7 @@ class SleekshopRequest
     {
         $post_data = $this->post_data;
         $post_data['request'] = 'get_delivery_countries';
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1289,7 +1352,8 @@ class SleekshopRequest
     {
         $post_data = $this->post_data;
         $post_data['request'] = 'get_payment_methods';
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1305,7 +1369,8 @@ class SleekshopRequest
         $post_data['request'] = 'do_payment';
         $post_data['id_order'] = $id_order;
         $post_data['args'] = json_encode($args);
-        return ($this->snd_request($this->server, $post_data));
+
+        return $this->snd_request($this->server, $post_data);
     }
 
     /**
@@ -1321,6 +1386,7 @@ class SleekshopRequest
         $post_data['request'] = 'add_delivery_costs';
         $post_data['session'] = $session;
         $post_data['delivery_costs'] = json_encode($delivery_costs);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1339,6 +1405,7 @@ class SleekshopRequest
         $post_data = $this->post_data;
         $post_data['request'] = 'aggregate';
         $post_data['pipe'] = json_encode($pipe);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1359,6 +1426,7 @@ class SleekshopRequest
         $post_data['request'] = 'add_coupons';
         $post_data['session'] = $session;
         $post_data['coupons'] = json_encode($coupons);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1380,6 +1448,7 @@ class SleekshopRequest
         $post_data['name'] = $name;
         $post_data['amount'] = $amount;
         $post_data['type'] = $type;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1397,6 +1466,7 @@ class SleekshopRequest
     {
         $post_data = $this->post_data;
         $post_data['request'] = 'get_status';
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1418,6 +1488,7 @@ class SleekshopRequest
         $post_data['description'] = $description;
         $post_data['shop_active'] = $shop_active;
         $post_data['server_output'] = $server_output;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1440,6 +1511,7 @@ class SleekshopRequest
         $post_data['application'] = $application;
         $post_data['app_request'] = $app_request;
         $post_data['args'] = json_encode($args);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1467,6 +1539,7 @@ class SleekshopRequest
         $post_data['id_manufacturer'] = $id_manufacturer;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['metadata'] = json_encode($metadata);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1490,6 +1563,7 @@ class SleekshopRequest
         $post_data['id_manufacturer'] = $id_manufacturer;
         $post_data['attributes'] = json_encode($attributes);
         $post_data['metadata'] = json_encode($metadata);
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1505,6 +1579,7 @@ class SleekshopRequest
         $post_data['licence_secret_key'] = $this->licence_secret_key;
         $post_data['request'] = 'delete_warehouse_entity';
         $post_data['id_warehouse_entity'] = $id_warehouse_entity;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1526,6 +1601,7 @@ class SleekshopRequest
         $post_data['element_number'] = $element_number;
         $post_data['quantity'] = $quantity;
         $post_data['note'] = $note;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1547,6 +1623,7 @@ class SleekshopRequest
         $post_data['element_number'] = $element_number;
         $post_data['quantity'] = $quantity;
         $post_data['note'] = $note;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1566,6 +1643,7 @@ class SleekshopRequest
         $post_data['id_product'] = $id_product;
         $post_data['element_number'] = $element_number;
         $post_data['quantity'] = $quantity;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1583,6 +1661,7 @@ class SleekshopRequest
         $post_data['request'] = 'delete_binding';
         $post_data['id_product'] = $id_product;
         $post_data['element_number'] = $element_number;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1605,6 +1684,7 @@ class SleekshopRequest
         $post_data['request'] = 'create_webhook';
         $post_data['name'] = $name;
         $post_data['event'] = $event;
+
         return $this->snd_request($this->server, $post_data);
     }
 
@@ -1625,6 +1705,7 @@ class SleekshopRequest
         $post_data['name'] = $name;
         $post_data['url'] = $url;
         $post_data['parameter'] = $parameter;
+
         return $this->snd_request($this->server, $post_data);
     }
 

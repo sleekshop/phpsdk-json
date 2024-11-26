@@ -15,22 +15,20 @@ $options = new DefaultOptions(
     'de_DE',
     'sleekshop',
     100,
-    '',
-    2,
-    ['class']
+    'id'
 );
 
 $sleekshop = new sleekSDK(
-    '', // needs values to work
+    // must be filled
     $options
 );
 
 $sessionOptions = new SessionOptions('none');
 
 try {
-//    $req = $sleekshop->CartCtl()->Add("1732038037E4bzdLcl7keR8ghm0y2G0GMU736M3Qty", 6696, 2, 'price', 'name', 'name', 'de_DE', 'PRODUCT_GR', 0, []);
-//    $req = $sleekshop->CartCtl()->Del("1732038037E4bzdLcl7keR8ghm0y2G0GMU736M3Qty", 7);
-//    $req = $sleekshop->CartCtl()->Clear("1732038037E4bzdLcl7keR8ghm0y2G0GMU736M3Qty");
+//    $req = $sleekshop->CartCtl()->AddToCart("1732038037E4bzdLcl7keR8ghm0y2G0GMU736M3Qty", 6696, 2, 'price', 'name', 'name', 'de_DE', 'PRODUCT_GR', 0, []);
+//    $req = $sleekshop->CartCtl()->DelFromCart("1732038037E4bzdLcl7keR8ghm0y2G0GMU736M3Qty", 7);
+//    $req = $sleekshop->CartCtl()->ClearCart("1732038037E4bzdLcl7keR8ghm0y2G0GMU736M3Qty");
 
 //    $req = $sleekshop->CategoriesCtl()->GetCategories(2);
 //    $req = $sleekshop->CategoriesCtl()->GetProductsInCategory(74);

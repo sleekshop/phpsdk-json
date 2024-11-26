@@ -33,9 +33,13 @@ class sleekSDK {
     private SleekshopRequest $request;
 
     /**
-     * @param string $server             The server URL
-     * @param string $licence_username   Sleekshop API Licence Username
-     * @param string $licence_password   Sleekshop API Licence Password
+     * Constructor for the sleekshop SDK
+     *
+     * @param string $server The server URL
+     * @param string $licence_username Sleekshop API Licence Username
+     * @param string $licence_password Sleekshop API Licence Password
+     * @param string $licence_secret_key Sleekshop API Licence Secret Key (optional)
+     * @param DefaultOptions|null $options Default options (optional)
      */
     public function __construct(string $server, string $licence_username, string $licence_password, string $licence_secret_key = '', DefaultOptions $options = null)
     {
@@ -145,16 +149,6 @@ class sleekSDK {
     }
 
     /**
-     * Returns a new instance of ShopobjectsCtl
-     *
-     * @return ShopobjectsCtl
-     */
-    public function ShopobjectsCtl(): ShopobjectsCtl
-    {
-        return new ShopobjectsCtl($this->request);
-    }
-
-    /**
      * Returns a new instance of SessionCtl
      *
      * @return SessionCtl
@@ -162,6 +156,16 @@ class sleekSDK {
     public function SessionCtl(): SessionCtl
     {
         return new SessionCtl($this->request);
+    }
+
+    /**
+     * Returns a new instance of ShopobjectsCtl
+     *
+     * @return ShopobjectsCtl
+     */
+    public function ShopobjectsCtl(): ShopobjectsCtl
+    {
+        return new ShopobjectsCtl($this->request);
     }
 
     /**
