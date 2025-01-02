@@ -19,7 +19,10 @@ $options = new DefaultOptions(
 );
 
 $sleekshop = new sleekSDK(
-    // must be filled
+    "https://<INSTANCE>.sleekshop.net/srv/service/",
+    "<licence_username>",
+    "<licence_password>",
+    "<licence_secret_key // optional>",
     $options
 );
 
