@@ -2,7 +2,7 @@
 
 namespace Sleekshop\Controller;
 
-use Sleekshop\Helper\SearchHelper;
+use Sleekshop\Helper\CategoriesHelper;
 use Sleekshop\SleekshopRequest;
 
 class CategoriesCtl
@@ -32,7 +32,7 @@ class CategoriesCtl
         if ($json['status'] == 'error') {
             return $json;
         }
-        $json['response'] = SearchHelper::process_products_response($json, $this->request);
+        $json['response'] = CategoriesHelper::process_products_response($json, $this->request);
         return $json;
     }
 
@@ -55,7 +55,7 @@ class CategoriesCtl
         if ($json['status'] == 'error') {
             return $json;
         }
-        $json['response'] = SearchHelper::process_contents_response($json, $this->request);
+        $json['response'] = CategoriesHelper::process_contents_response($json, $this->request);
         return $json;
     }
 
@@ -74,7 +74,7 @@ class CategoriesCtl
         if ($json['status'] == 'error') {
             return $json;
         }
-        $json['response'] = SearchHelper::process_categories_response($json['response'], $this->request);
+        $json['response'] = CategoriesHelper::process_categories_response($json['response'], $this->request);
         return $json;
     }
 
